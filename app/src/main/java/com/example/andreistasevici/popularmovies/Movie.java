@@ -24,7 +24,7 @@ public class Movie {
     public static ArrayList<Movie> createMoviesList(int movieCount) {
         ArrayList<Movie> movies = new ArrayList<>();
 
-        for (int i = 1; i < movieCount; i++) {
+        for (int i = 1; i <= movieCount; i++) {
             lastMovieId++;
             movies.add(new Movie("Movie " + String.valueOf(lastMovieId)));
         }
