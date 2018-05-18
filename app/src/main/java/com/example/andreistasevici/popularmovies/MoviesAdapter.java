@@ -1,10 +1,14 @@
 package com.example.andreistasevici.popularmovies;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * Created by andreistasevici on 5/13/18.
@@ -14,9 +18,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     private int movieCount;
 
+    private List<Movie> mMovies;
+
     /* constructor for MoviesAdapter */
-    public MoviesAdapter(int numberOfMovies) {
-        movieCount = numberOfMovies;
+    public MoviesAdapter(List<Movie> movies) {
+        mMovies = movies;
     }
 
     /* creating an adapter inner class for ViewHolder object */
@@ -35,19 +41,26 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     /* overriding all the required methods when extending RecyclerView.Adapter */
     @Override
     public int getItemCount() {
-        return movieCount;
+        return mMovies.size();
     }
 
-    //TODO: not completed
     @NonNull
     @Override
     public MoviesAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        Context context = parent.getContext();
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+
+        View movieView = layoutInflater.inflate(R.layout.movies_list_item, parent, false);
+        MovieViewHolder movieViewHolder = new MovieViewHolder(movieView);
+        return movieViewHolder;
     }
 
     //TODO: not implemeted
     @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
+        Movie movie = mMovies.get(position);
 
+        TextView textView = movieViewHolder.movieItemView;
+        textView.setText(movie.getmMovieName());
     }
 }
