@@ -16,26 +16,39 @@ import java.util.List;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
+    private final ListItemClickListener mOnClickListener;
     private int movieCount;
-
     private List<Movie> mMovies;
 
+    /* adding interface to implement "click on item" functionality */
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
+
     /* constructor for MoviesAdapter */
-    public MoviesAdapter(List<Movie> movies) {
+    public MoviesAdapter(List<Movie> movies, ListItemClickListener onClickListener) {
         mMovies = movies;
+        mOnClickListener = onClickListener;
     }
 
     /* creating an adapter inner class for ViewHolder object */
-    class MovieViewHolder extends RecyclerView.ViewHolder {
-
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView movieItemView;
 
         /* creating default constructor */
         public MovieViewHolder(View movieView) {
             super(movieView);
             movieItemView = (TextView) movieView.findViewById(R.id.tv_movie_name);
+            movieView.setOnClickListener(this);
         }
 
+        /* override onClick method since we are implementing
+        * OnClickListener for this class */
+        @Override
+        public void onClick(View v) {
+            int clickedPostition = getAdapterPosition();
+            mOnClickListener.onListItemClick(clickedPostition);
+        }
     }
 
     /* overriding all the required methods when extending RecyclerView.Adapter */
