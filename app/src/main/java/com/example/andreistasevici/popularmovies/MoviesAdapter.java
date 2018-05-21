@@ -55,7 +55,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         return movieViewHolder;
     }
 
-    //TODO: not implemeted
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
         Movie movie = mMovies.get(position);

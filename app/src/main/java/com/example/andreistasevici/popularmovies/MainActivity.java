@@ -13,13 +13,14 @@ public class MainActivity extends AppCompatActivity {
      https://guides.codepath.com/android/using-the-recyclerview*/
 
     ArrayList<Movie> movies;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_movies_list);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_movies_list);
         movies = Movie.createMoviesList(20);
         MoviesAdapter moviesAdapter = new MoviesAdapter(movies);
 
