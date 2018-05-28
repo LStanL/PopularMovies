@@ -1,6 +1,6 @@
 package com.example.andreistasevici.popularmovies;
 
-import java.util.ArrayList;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by andreistasevici on 5/17/18.
@@ -8,27 +8,21 @@ import java.util.ArrayList;
 
 public class Movie {
 
+    @SerializedName("title")
     private String mMovieName;
-    private static int lastMovieId;
+    //private static int lastMovieId;
 
     /* contructor */
     public Movie(String movieName) {
         this.mMovieName = movieName;
     }
 
-    public String getmMovieName() {
+    public String getMovieName() {
         return mMovieName;
     }
 
-    /* method to generate ArrayList of movies */
-    public static ArrayList<Movie> createMoviesList(int movieCount) {
-        ArrayList<Movie> movies = new ArrayList<>();
-
-        for (int i = 1; i <= movieCount; i++) {
-            lastMovieId++;
-            movies.add(new Movie("Movie " + String.valueOf(lastMovieId)));
-        }
-
-        return movies;
+    public void setMovieName(String movieName) {
+        this.mMovieName = movieName;
     }
+
 }

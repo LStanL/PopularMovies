@@ -73,6 +73,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         Movie movie = mMovies.get(position);
 
         TextView textView = movieViewHolder.movieItemView;
-        textView.setText(movie.getmMovieName());
+        textView.setText(movie.getMovieName());
     }
 }

@@ -1,33 +1,47 @@
 package com.example.andreistasevici.popularmovies;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.ListItemClickListener {
 
     /* resource used to help with RecyclerView:
      https://guides.codepath.com/android/using-the-recyclerview*/
 
-    ArrayList<Movie> movies;
     private RecyclerView recyclerView;
     private Toast mToast;
+    private MoviesAdapter moviesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.rv_movies_list);
-        movies = Movie.createMoviesList(20);
-        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        MovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(MovieDBAPI.class);
+        Call<MovieApiResponse> call = movieDBAPI.fetchPopularMovies();
+        call.enqueue(new Callback<MovieApiResponse>() {
+            @Override
+            public void onResponse(Call<MovieApiResponse> call,
+                                   Response<MovieApiResponse> response) {
+                recyclerView = findViewById(R.id.rv_movies_list);
+                moviesAdapter = new MoviesAdapter(response.body().getMovies(), MainActivity.this);
+                recyclerView.setAdapter(moviesAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
-        recyclerView.setAdapter(moviesAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            }
+
+            @Override
+            public void onFailure(Call<MovieApiResponse> call, Throwable t) {
+
+            }
+        });
 
     }
 
