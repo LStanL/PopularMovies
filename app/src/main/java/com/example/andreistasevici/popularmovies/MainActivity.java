@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(MovieDBAPI.class);
+        TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
         Call<MovieApiResponse> call = movieDBAPI.fetchPopularMovies();
         call.enqueue(new Callback<MovieApiResponse>() {
             @Override
