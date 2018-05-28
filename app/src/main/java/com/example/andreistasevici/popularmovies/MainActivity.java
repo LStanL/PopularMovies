@@ -2,7 +2,7 @@ package com.example.andreistasevici.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 recyclerView = findViewById(R.id.rv_movies_list);
                 moviesAdapter = new MoviesAdapter(response.body().getMovies(), MainActivity.this);
                 recyclerView.setAdapter(moviesAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
 
             }
 
