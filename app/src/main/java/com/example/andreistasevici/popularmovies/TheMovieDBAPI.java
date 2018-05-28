@@ -5,6 +5,7 @@ import retrofit2.http.GET;
 
 /**
  * Created by andreistasevici on 5/28/18.
+ * Reference: http://www.vogella.com/tutorials/Retrofit/article.html
  */
 
 public interface TheMovieDBAPI {

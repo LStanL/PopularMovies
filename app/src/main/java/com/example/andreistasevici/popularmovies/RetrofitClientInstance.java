@@ -5,6 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by andreistasevici on 5/27/18.
+ * Reference: http://www.vogella.com/tutorials/Retrofit/article.html
  */
 
 public class RetrofitClientInstance {
