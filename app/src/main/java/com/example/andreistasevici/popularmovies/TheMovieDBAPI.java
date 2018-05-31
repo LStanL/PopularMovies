@@ -2,6 +2,7 @@ package com.example.andreistasevici.popularmovies;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Created by andreistasevici on 5/28/18.
@@ -11,7 +12,7 @@ import retrofit2.http.GET;
 public interface TheMovieDBAPI {
 
     @GET("movie/popular")
-    Call<MovieApiResponse> fetchPopularMovies();
+    Call<MovieApiResponse> fetchPopularMovies(@Query("api_key") String api_key);
 
     @GET("movie/top_rated")
     Call<MovieApiResponse> fetchTopRatedMovies();
