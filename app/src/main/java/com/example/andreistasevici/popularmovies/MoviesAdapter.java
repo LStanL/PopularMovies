@@ -3,10 +3,14 @@ package com.example.andreistasevici.popularmovies;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -19,6 +23,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private final ListItemClickListener mOnClickListener;
     private int movieCount;
     private List<Movie> mMovies;
+    private Context mContext;
+    private final static String TAG = MoviesAdapter.class.getSimpleName();
+    private final static String IMAGE_BASE_URI = "http://image.tmdb.org/t/p/w185";
 
     /* adding interface to implement "click on item" functionality */
     public interface ListItemClickListener {
@@ -26,7 +33,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     /* constructor for MoviesAdapter */
-    public MoviesAdapter(List<Movie> movies, ListItemClickListener onClickListener) {
+    public MoviesAdapter(Context context, List<Movie> movies, ListItemClickListener onClickListener) {
+        this.mContext = context;
         mMovies = movies;
         mOnClickListener = onClickListener;
     }
@@ -34,11 +42,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     /* creating an adapter inner class for ViewHolder object */
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView movieItemView;
+        ImageView movieImageView;
 
         /* creating default constructor */
         public MovieViewHolder(View movieView) {
             super(movieView);
-            movieItemView = (TextView) movieView.findViewById(R.id.tv_movie_name);
+            movieImageView = movieView.findViewById(R.id.iv_movie_poster);
             movieView.setOnClickListener(this);
         }
 
@@ -72,7 +81,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
         Movie movie = mMovies.get(position);
 
-        TextView textView = movieViewHolder.movieItemView;
-        textView.setText(movie.getMovieName());
+        // This was valid when setting text, now have to set image
+        //TextView textView = movieViewHolder.movieItemView;
+        //textView.setText(movie.getMovieName());
+
+        ImageView imageView = movieViewHolder.movieImageView;
+
+        // image uri
+        String imageUri = IMAGE_BASE_URI + movie.getmMoviePosterPath();
+
+        Log.d(TAG, "onBindViewHolder: the url for the image will be: " + imageUri);
+        Picasso
+                .with(mContext)
+                .load(imageUri)
+                .into(imageView);
     }
 }

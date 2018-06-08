@@ -10,11 +10,14 @@ public class Movie {
 
     @SerializedName("title")
     private String mMovieName;
-    //private static int lastMovieId;
+
+    @SerializedName("poster_path")
+    private String mMoviePosterPath;
 
     /* contructor */
-    public Movie(String movieName) {
+    public Movie(String movieName, String posterPath) {
         this.mMovieName = movieName;
+        this.mMoviePosterPath = posterPath;
     }
 
     public String getMovieName() {
@@ -25,4 +28,11 @@ public class Movie {
         this.mMovieName = movieName;
     }
 
+    public String getmMoviePosterPath() {
+        return mMoviePosterPath;
+    }
+
+    public void setmMoviePosterPath(String mMoviePosterPath) {
+        this.mMoviePosterPath = mMoviePosterPath;
+    }
 }
