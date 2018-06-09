@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 recyclerView = findViewById(R.id.rv_movies_list);
                 moviesAdapter = new MoviesAdapter(MainActivity.this, response.body().getMovies(), MainActivity.this);
                 recyclerView.setAdapter(moviesAdapter);
-                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
+                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
 
             }
 

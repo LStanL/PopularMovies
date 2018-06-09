@@ -81,10 +81,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
         Movie movie = mMovies.get(position);
 
-        // This was valid when setting text, now have to set image
-        //TextView textView = movieViewHolder.movieItemView;
-        //textView.setText(movie.getMovieName());
-
         ImageView imageView = movieViewHolder.movieImageView;
 
         // image uri
