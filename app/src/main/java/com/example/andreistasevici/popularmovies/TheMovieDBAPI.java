@@ -15,5 +15,5 @@ public interface TheMovieDBAPI {
     Call<MovieApiResponse> fetchPopularMovies(@Query("api_key") String api_key);
 
     @GET("movie/top_rated")
-    Call<MovieApiResponse> fetchTopRatedMovies();
+    Call<MovieApiResponse> fetchTopRatedMovies(@Query("api_key") String api_key);
 }
