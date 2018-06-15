@@ -29,7 +29,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     /* adding interface to implement "click on item" functionality */
     public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+        void onListItemClick(Movie movie);
     }
 
     /* constructor for MoviesAdapter */
@@ -56,7 +56,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         @Override
         public void onClick(View v) {
             int clickedPostition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPostition);
+            Movie movie = mMovies.get(clickedPostition);
+
+            mOnClickListener.onListItemClick(movie);
         }
     }
 
@@ -91,5 +93,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                 .with(mContext)
                 .load(imageUri)
                 .into(imageView);
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.andreistasevici.popularmovies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -49,14 +50,22 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     /* implementing onListItemClick , for now let's just show a Toast message when clicked*/
     @Override
-    public void onListItemClick(int clickedItemIndex) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
+    public void onListItemClick(Movie movie) {
+//        if (mToast != null) {
+//            mToast.cancel();
+//        }
+//
+//        String toastMessage = "Item # " + movie.getMovieName() + " clicked";
+//        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+//        mToast.show();
 
-        String toastMessage = "Item # " + String.valueOf(clickedItemIndex + 1) + " clicked";
-        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
-        mToast.show();
+        Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
+        intent.putExtra("MOVIE_POSTER_PATH", movie.getmMoviePosterPath());
+        intent.putExtra("MOVIE_NAME", movie.getMovieName());
+        intent.putExtra("MOVIE_RELEASE_DATE", movie.getReleaseDate());
+        intent.putExtra("MOVIE_VOTE_AVERAGE", movie.getVoteAverage());
+        intent.putExtra("MOVIE_PLOT_SYNOPSIS", movie.getPlotSynposis());
+        startActivity(intent);
     }
 
     /*Override onCreateOptionsMenu to create menu*/

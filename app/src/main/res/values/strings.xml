@@ -1,6 +1,16 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
+    <string name="main_activity_name">Popular Movies</string>
+    <string name="details_activity_name">Movie Details</string>
+    <string name="movie_poster">Movie Poster</string>
     <!--Create strings for the menu items-->
     <string name="most_popular">Most Popular</string>
     <string name="top_rated">Top Rated</string>
+    <string name="title_activity_movie_details">MovieDetails</string>
+
+    <!--Label strings-->
+    <string name="movie_title_label">Title</string>
+    <string name="release_date_label">Release date</string>
+    <string name="vote_average_label">Vote average</string>
+    <string name="plot_synopsis_label">Plot synopsis</string>
+
 </resources>

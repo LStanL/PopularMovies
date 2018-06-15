@@ -8,31 +8,49 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie {
 
-    @SerializedName("title")
-    private String mMovieName;
-
     @SerializedName("poster_path")
     private String mMoviePosterPath;
 
+    @SerializedName("title")
+    private String mMovieName;
+
+    @SerializedName("release_date")
+    private String mReleaseDate;
+
+    @SerializedName("vote_average")
+    private String mVoteAverage;
+
+    @SerializedName("overview")
+    private String mPlotSynposis;
+
     /* contructor */
-    public Movie(String movieName, String posterPath) {
-        this.mMovieName = movieName;
+    public Movie(String posterPath, String movieName, String releaseDate,
+                 String voteAverage, String plotSynopsis) {
         this.mMoviePosterPath = posterPath;
-    }
-
-    public String getMovieName() {
-        return mMovieName;
-    }
-
-    public void setMovieName(String movieName) {
         this.mMovieName = movieName;
+        this.mReleaseDate = releaseDate;
+        this.mVoteAverage = voteAverage;
+        this.mPlotSynposis = plotSynopsis;
+
     }
 
     public String getmMoviePosterPath() {
         return mMoviePosterPath;
     }
 
-    public void setmMoviePosterPath(String mMoviePosterPath) {
-        this.mMoviePosterPath = mMoviePosterPath;
+    public String getMovieName() {
+        return mMovieName;
+    }
+
+    public String getReleaseDate() {
+        return mReleaseDate;
+    }
+
+    public String getVoteAverage() {
+        return mVoteAverage;
+    }
+
+    public String getPlotSynposis() {
+        return mPlotSynposis;
     }
 }
