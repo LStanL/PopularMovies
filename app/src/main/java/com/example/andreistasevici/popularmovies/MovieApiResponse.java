@@ -18,8 +18,4 @@ public class MovieApiResponse {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
-    }
-
 }

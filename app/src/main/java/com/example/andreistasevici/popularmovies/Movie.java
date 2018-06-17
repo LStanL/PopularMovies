@@ -4,9 +4,14 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by andreistasevici on 5/17/18.
+ * Reference: http://www.vogella.com/tutorials/Retrofit/article.html
  */
 
 public class Movie {
+
+    /*
+    * Data class for retrofit
+    * */
 
     @SerializedName("poster_path")
     private String mMoviePosterPath;
@@ -23,7 +28,7 @@ public class Movie {
     @SerializedName("overview")
     private String mPlotSynposis;
 
-    /* contructor */
+    //Contructor
     public Movie(String posterPath, String movieName, String releaseDate,
                  String voteAverage, String plotSynopsis) {
         this.mMoviePosterPath = posterPath;
@@ -34,6 +39,7 @@ public class Movie {
 
     }
 
+    //Getters for all the fields
     public String getmMoviePosterPath() {
         return mMoviePosterPath;
     }

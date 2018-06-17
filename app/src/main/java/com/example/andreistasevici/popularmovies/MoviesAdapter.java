@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,38 +20,43 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
     private final ListItemClickListener mOnClickListener;
-    private int movieCount;
     private List<Movie> mMovies;
     private Context mContext;
     private final static String TAG = MoviesAdapter.class.getSimpleName();
     private final static String IMAGE_BASE_URI = "http://image.tmdb.org/t/p/w185";
 
-    /* adding interface to implement "click on item" functionality */
+    /*
+    * Adding interface to implement "click on item" functionality
+    * */
     public interface ListItemClickListener {
         void onListItemClick(Movie movie);
     }
 
-    /* constructor for MoviesAdapter */
+    /*
+    * Constructor for MoviesAdapter
+    * */
     public MoviesAdapter(Context context, List<Movie> movies, ListItemClickListener onClickListener) {
         this.mContext = context;
         mMovies = movies;
         mOnClickListener = onClickListener;
     }
 
-    /* creating an adapter inner class for ViewHolder object */
+    /*
+    * Creating an adapter inner class for ViewHolder object
+    * */
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView movieItemView;
-        ImageView movieImageView;
+        private ImageView movieImageView;
 
-        /* creating default constructor */
+        //Creating default constructor
         public MovieViewHolder(View movieView) {
             super(movieView);
             movieImageView = movieView.findViewById(R.id.iv_movie_poster);
             movieView.setOnClickListener(this);
         }
 
-        /* override onClick method since we are implementing
-        * OnClickListener for this class */
+        /*
+        * Override onClick method since we are implementing OnClickListener for this class
+        * */
         @Override
         public void onClick(View v) {
             int clickedPostition = getAdapterPosition();
@@ -62,7 +66,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
     }
 
-    /* overriding all the required methods when extending RecyclerView.Adapter */
+    /*
+    * Overriding all the required methods when extending RecyclerView.Adapter
+    * */
     @Override
     public int getItemCount() {
         return mMovies.size();
@@ -85,7 +91,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         ImageView imageView = movieViewHolder.movieImageView;
 
-        // image uri
+        //Image uri
         String imageUri = IMAGE_BASE_URI + movie.getmMoviePosterPath();
 
         Log.d(TAG, "onBindViewHolder: the url for the image will be: " + imageUri);

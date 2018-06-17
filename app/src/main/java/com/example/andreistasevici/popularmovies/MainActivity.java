@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,11 +14,12 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.ListItemClickListener {
 
-    /* resource used to help with RecyclerView:
-     https://guides.codepath.com/android/using-the-recyclerview*/
+    /*
+    Resource used to help with RecyclerView:
+    https://guides.codepath.com/android/using-the-recyclerview
+    */
 
     private RecyclerView recyclerView;
-    private Toast mToast;
     private MoviesAdapter moviesAdapter;
 
     @Override
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Making request to fetch popular movies on activity creation
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
         Call<MovieApiResponse> call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
         call.enqueue(new Callback<MovieApiResponse>() {
@@ -48,17 +49,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     }
 
-    /* implementing onListItemClick , for now let's just show a Toast message when clicked*/
+    /*
+    Implementing onListItemClick, open a new activity and pass all the details
+    */
     @Override
     public void onListItemClick(Movie movie) {
-//        if (mToast != null) {
-//            mToast.cancel();
-//        }
-//
-//        String toastMessage = "Item # " + movie.getMovieName() + " clicked";
-//        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
-//        mToast.show();
-
         Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
         intent.putExtra("MOVIE_POSTER_PATH", movie.getmMoviePosterPath());
         intent.putExtra("MOVIE_NAME", movie.getMovieName());
@@ -68,14 +63,18 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         startActivity(intent);
     }
 
-    /*Override onCreateOptionsMenu to create menu*/
+    /*
+    Override onCreateOptionsMenu to create menu
+    */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_sort, menu);
         return true;
     }
 
-    /*Override onOptionsItemSelected to take proper action when menu item selected*/
+    /*
+    Override onOptionsItemSelected to take proper action when menu item selected
+    */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemSelected = item.getItemId();
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         TheMovieDBAPI movieDBAPI = null;
         Call<MovieApiResponse> call = null;
 
-        /*Check which menu item was selected*/
+        //Check which menu item was selected
         switch (itemSelected) {
             case R.id.search_popular:
                 movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
