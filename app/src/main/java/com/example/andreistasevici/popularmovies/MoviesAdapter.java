@@ -3,7 +3,6 @@ package com.example.andreistasevici.popularmovies;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,18 +87,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
         Movie movie = mMovies.get(position);
-
         ImageView imageView = movieViewHolder.movieImageView;
 
-        //Image uri
+        //construct image uri and load fetch it using picasso
         String imageUri = IMAGE_BASE_URI + movie.getmMoviePosterPath();
-
-        Log.d(TAG, "onBindViewHolder: the url for the image will be: " + imageUri);
         Picasso
                 .with(mContext)
                 .load(imageUri)
                 .into(imageView);
-
-
     }
 }

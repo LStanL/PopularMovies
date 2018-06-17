@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     private RecyclerView recyclerView;
     private MoviesAdapter moviesAdapter;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         setContentView(R.layout.activity_main);
 
         //Making request to fetch popular movies on activity creation
+        Log.d(TAG, "onCreate: fetching most popular movies");
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
         Call<MovieApiResponse> call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
         call.enqueue(new Callback<MovieApiResponse>() {
@@ -38,12 +41,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 moviesAdapter = new MoviesAdapter(MainActivity.this, response.body().getMovies(), MainActivity.this);
                 recyclerView.setAdapter(moviesAdapter);
                 recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-
+                Log.d(TAG, "onCreate:onResponse: fetching most popular movies completed");
             }
 
             @Override
             public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-
+                Log.d(TAG, "onCreate:onFailure: failure in fetching most popular movies");
             }
         });
 
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemSelected = item.getItemId();
+        Log.d(TAG, "onOptionsItemSelected: itemSelected = " + itemSelected);
 
         TheMovieDBAPI movieDBAPI = null;
         Call<MovieApiResponse> call = null;
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         //Check which menu item was selected
         switch (itemSelected) {
             case R.id.search_popular:
+                Log.d(TAG, "onOptionsItemSelected: fetching most popular movies since itemSelected is = " + R.id.search_popular);
                 movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
                 call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
                 call.enqueue(new Callback<MovieApiResponse>() {
@@ -95,15 +100,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                         moviesAdapter = new MoviesAdapter(MainActivity.this, response.body().getMovies(), MainActivity.this);
                         recyclerView.setAdapter(moviesAdapter);
                         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-
+                        Log.d(TAG, "onOptionsItemSelected:onResponse: fetching most popular movies completed");
                     }
 
                     @Override
                     public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-
+                        Log.d(TAG, "onOptionsItemSelected:onFailure: failure in fetching most popular movies");
                     }
                 });
+                break;
             case R.id.search_top_rated:
+                Log.d(TAG, "onOptionsItemSelected: fetching top rated movies since itemSelected is = " + R.id.search_top_rated);
                 movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
                 call = movieDBAPI.fetchTopRatedMovies(getResources().getString(R.string.api_key));
                 call.enqueue(new Callback<MovieApiResponse>() {
@@ -114,15 +121,15 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                         moviesAdapter = new MoviesAdapter(MainActivity.this, response.body().getMovies(), MainActivity.this);
                         recyclerView.setAdapter(moviesAdapter);
                         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-
+                        Log.d(TAG, "onOptionsItemSelected:onResponse: fetching top rated movies completed");
                     }
 
                     @Override
                     public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-
+                        Log.d(TAG, "onOptionsItemSelected:onFailure: failure in fetching top rated movies");
                     }
                 });
-
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
