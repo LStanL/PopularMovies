@@ -21,8 +21,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private final ListItemClickListener mOnClickListener;
     private List<Movie> mMovies;
     private Context mContext;
-    private final static String TAG = MoviesAdapter.class.getSimpleName();
-    private final static String IMAGE_BASE_URI = "http://image.tmdb.org/t/p/w185";
 
     /*
     * Adding interface to implement "click on item" functionality
@@ -90,7 +88,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         ImageView imageView = movieViewHolder.movieImageView;
 
         //construct image uri and load fetch it using picasso
-        String imageUri = IMAGE_BASE_URI + movie.getmMoviePosterPath();
+        String imageUri = Constants.IMAGE_BASE_URI + movie.getmMoviePosterPath();
         Picasso
                 .with(mContext)
                 .load(imageUri)
