@@ -33,14 +33,18 @@ public class Movie implements Parcelable{
     @SerializedName("overview")
     private String mPlotSynposis;
 
+    @SerializedName("id")
+    private String mId;
+
     //Contructor
     public Movie(String posterPath, String movieName, String releaseDate,
-                 String voteAverage, String plotSynopsis) {
+                 String voteAverage, String plotSynopsis, String id) {
         this.mMoviePosterPath = posterPath;
         this.mMovieName = movieName;
         this.mReleaseDate = releaseDate;
         this.mVoteAverage = voteAverage;
         this.mPlotSynposis = plotSynopsis;
+        this.mId = id;
 
     }
 
@@ -65,6 +69,8 @@ public class Movie implements Parcelable{
         return mPlotSynposis;
     }
 
+    public String getId() { return mId; }
+
 
     //Parcelling part
     public Movie(Parcel in) {
@@ -73,6 +79,7 @@ public class Movie implements Parcelable{
         this.mReleaseDate = in.readString();
         this.mVoteAverage = in.readString();
         this.mPlotSynposis = in.readString();
+        this.mId = in.readString();
     }
 
     /*overriding describeContents and writeToParcel which is required when
@@ -89,6 +96,7 @@ public class Movie implements Parcelable{
         dest.writeString(this.mReleaseDate);
         dest.writeString(this.mVoteAverage);
         dest.writeString(this.mPlotSynposis);
+        dest.writeString(this.mId);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {

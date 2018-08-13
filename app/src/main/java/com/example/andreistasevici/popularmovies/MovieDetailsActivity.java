@@ -37,9 +37,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         Movie movie = data.getParcelable("movie");
 
+        //get id for the movie that was selected and pass it in the API call to fetch trailers
+        String movieId = movie.getId();
+
         //network call to fetch trailers
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
-        Call<TrailersApiResponse> call = movieDBAPI.fetchTrailers(getResources().getString(R.string.api_key));
+        Call<TrailersApiResponse> call = movieDBAPI.fetchTrailers(movieId,
+                getResources().getString(R.string.api_key));
         call.enqueue(new Callback<TrailersApiResponse>() {
             @Override
             public void onResponse(Call<TrailersApiResponse> call, Response<TrailersApiResponse> response) {
@@ -47,7 +51,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 trailersAdapter = new TrailersAdapter(response.body().getTrailers());
                 trailersRecyclerView.setAdapter(trailersAdapter);
                 trailersRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
             }
 
             @Override
@@ -55,6 +58,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 Log.d(TAG, "failure in fetching movie trailers");
             }
         });
+
+        //set all the UI string for movie details
         setUpUI(movie);
     }
 
