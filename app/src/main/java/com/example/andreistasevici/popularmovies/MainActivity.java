@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     * https://guides.codepath.com/android/using-the-recyclerview
     * */
 
-    private RecyclerView recyclerView;
+    private RecyclerView moviesRecyclerView;
     private MoviesAdapter moviesAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -85,10 +85,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             @Override
             public void onResponse(Call<MovieApiResponse> call,
                                    Response<MovieApiResponse> response) {
-                recyclerView = findViewById(R.id.rv_movies_list);
-                moviesAdapter = new MoviesAdapter(MainActivity.this, response.body().getMovies(), MainActivity.this);
-                recyclerView.setAdapter(moviesAdapter);
-                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                moviesRecyclerView = findViewById(R.id.rv_movies_list);
+                moviesAdapter = new MoviesAdapter(MainActivity.this, response.body().getMovies(),
+                        MainActivity.this);
+                moviesRecyclerView.setAdapter(moviesAdapter);
+                moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
             }
 
             @Override

@@ -2,10 +2,17 @@ package com.example.andreistasevici.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
@@ -16,6 +23,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private TextView mVoteAverage;
     private TextView mPlotSynopsis;
 
+    private RecyclerView trailersRecyclerView;
+    private TrailersAdapter trailersAdapter;
+
+    public static final String TAG = MovieDetailsActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +36,25 @@ public class MovieDetailsActivity extends AppCompatActivity {
         //getting object that was passed in the intent
         Bundle data = getIntent().getExtras();
         Movie movie = data.getParcelable("movie");
+
+        //network call to fetch trailers
+        TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
+        Call<TrailersApiResponse> call = movieDBAPI.fetchTrailers(getResources().getString(R.string.api_key));
+        call.enqueue(new Callback<TrailersApiResponse>() {
+            @Override
+            public void onResponse(Call<TrailersApiResponse> call, Response<TrailersApiResponse> response) {
+                trailersRecyclerView = findViewById(R.id.rv_trailers_list);
+                trailersAdapter = new TrailersAdapter(response.body().getTrailers());
+                trailersRecyclerView.setAdapter(trailersAdapter);
+                trailersRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+            }
+
+            @Override
+            public void onFailure(Call<TrailersApiResponse> call, Throwable t) {
+                Log.d(TAG, "failure in fetching movie trailers");
+            }
+        });
         setUpUI(movie);
     }
 

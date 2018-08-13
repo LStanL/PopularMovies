@@ -16,4 +16,12 @@ public interface TheMovieDBAPI {
 
     @GET("movie/top_rated")
     Call<MovieApiResponse> fetchTopRatedMovies(@Query("api_key") String api_key);
+
+    /*@GET("movie/{movieId}/videos")
+    Call<TrailersApiResponse> fetchTrailers(@Path("movieId") String movieId,
+                                            @Query("api_key") String api_key);*/
+
+    // to test the api works let's hardcode movie id
+    @GET("movie/299536/videos")
+    Call<TrailersApiResponse> fetchTrailers(@Query("api_key") String api_key);
 }

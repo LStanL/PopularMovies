@@ -102,6 +102,11 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@id/tv_plot_synopsis_label" />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailers_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_plot_synopsis"/>
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
