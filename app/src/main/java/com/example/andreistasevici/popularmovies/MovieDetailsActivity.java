@@ -2,6 +2,7 @@ package com.example.andreistasevici.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,6 +52,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 trailersAdapter = new TrailersAdapter(response.body().getTrailers());
                 trailersRecyclerView.setAdapter(trailersAdapter);
                 trailersRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                //add dividers between items in recyclerview
+                //https://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview
+                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(trailersRecyclerView.getContext(),
+                        new LinearLayoutManager(getApplicationContext()).getOrientation());
+                trailersRecyclerView.addItemDecoration(dividerItemDecoration);
             }
 
             @Override
