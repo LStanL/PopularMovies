@@ -1,5 +1,8 @@
 package com.example.andreistasevici.popularmovies;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,7 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity implements TrailersAdapter.ListItemClickListener{
 
     //Fields for all the UI elements present in the activity
     private ImageView mMovieDetailsPoster;
@@ -49,7 +52,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TrailersApiResponse> call, Response<TrailersApiResponse> response) {
                 trailersRecyclerView = findViewById(R.id.rv_trailers_list);
-                trailersAdapter = new TrailersAdapter(response.body().getTrailers());
+                trailersAdapter = new TrailersAdapter(MovieDetailsActivity.this, response.body().getTrailers(),
+                        MovieDetailsActivity.this);
                 trailersRecyclerView.setAdapter(trailersAdapter);
                 trailersRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
@@ -68,6 +72,22 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         //set all the UI string for movie details
         setUpUI(movie);
+    }
+
+    /*
+    Implementing onListItemClick, open trailer video in youtube app or browser
+    https://stackoverflow.com/questions/574195/android-youtube-app-play-video-intent
+    */
+    @Override
+    public void onListItemClick(Trailer trailer) {
+        Intent nativeAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailer.getKey()));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
+
+        try {
+            startActivity(nativeAppIntent);
+        } catch (ActivityNotFoundException ex) {
+            startActivity(webIntent);
+        }
     }
 
     private void setUpUI(Movie movie) {

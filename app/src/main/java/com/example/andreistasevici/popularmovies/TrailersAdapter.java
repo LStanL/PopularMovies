@@ -17,19 +17,42 @@ import java.util.List;
 public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailerViewHolder> {
 
     private List<Trailer> mTrailers;
+    private final ListItemClickListener mOnClickListener;
+    private Context mContext;
+
+    /*
+    * Adding interface to implement "click on item" functionality
+    * */
+    public interface ListItemClickListener {
+        void onListItemClick(Trailer trailer);
+    }
 
     //constructor for TrailersAdapter
-    public TrailersAdapter(List<Trailer> trailers) {
-        this.mTrailers = trailers;
+    public TrailersAdapter(Context context, List<Trailer> trailers, ListItemClickListener onClickListener) {
+        this.mContext = context;
+        mTrailers = trailers;
+        mOnClickListener = onClickListener;
     }
 
     //internal class for Trailer ViewHolder
-    class TrailerViewHolder extends RecyclerView.ViewHolder {
+    class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView movieNameTextView;
 
         public TrailerViewHolder(View trailerView){
             super(trailerView);
             movieNameTextView = trailerView.findViewById(R.id.tv_trailer_name);
+            trailerView.setOnClickListener(this);
+        }
+
+        /*
+        * Override onClick method since we are implementing OnClickListener for this class
+        * */
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            Trailer trailer = mTrailers.get(clickedPosition);
+
+            mOnClickListener.onListItemClick(trailer);
         }
     }
 
