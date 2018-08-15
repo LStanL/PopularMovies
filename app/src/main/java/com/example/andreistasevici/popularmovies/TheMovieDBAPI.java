@@ -22,4 +22,8 @@ public interface TheMovieDBAPI {
     Call<TrailersApiResponse> fetchTrailers(@Path("movieId") String movieId,
                                             @Query("api_key") String api_key);
 
+    @GET("movie/{movieId}/reviews")
+    Call<ReviewsApiResponse> fetchReviews(@Path("movieId") String movieId,
+                                          @Query("api_key") String api_key);
+
 }
