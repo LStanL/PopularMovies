@@ -82,6 +82,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
                 reviewsAdapter = new ReviewsAdapter(response.body().getReviews());
                 reviewsRecyclerView.setAdapter(reviewsAdapter);
                 reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                //add dividers between items in recyclerview
+                //https://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview
+                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(reviewsRecyclerView.getContext(),
+                        new LinearLayoutManager(getApplicationContext()).getOrientation());
+                reviewsRecyclerView.addItemDecoration(dividerItemDecoration);
             }
 
             @Override

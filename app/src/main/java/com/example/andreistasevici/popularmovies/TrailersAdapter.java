@@ -3,6 +3,9 @@ package com.example.andreistasevici.popularmovies;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +39,12 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
 
     //internal class for Trailer ViewHolder
     class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        //TODO: change this to trailerNameTextView??
-        private TextView movieNameTextView;
+        private TextView trailerTextView;
 
         public TrailerViewHolder(View trailerView){
             super(trailerView);
-            movieNameTextView = trailerView.findViewById(R.id.tv_trailer_name);
-            trailerView.setOnClickListener(this);
+            trailerTextView = trailerView.findViewById(R.id.tv_trailer_name);
+            trailerTextView.setOnClickListener(this);
         }
 
         /*
@@ -80,9 +82,19 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
     @Override
     public void onBindViewHolder(@NonNull TrailerViewHolder holder, int position) {
         Trailer trailer = mTrailers.get(position);
-        TextView textView = holder.movieNameTextView;
+        TextView textView = holder.trailerTextView;
 
-        //add text to text view
+
+        //add text to text view and make it hyperlink
+        //https://twigstechtips.blogspot.com/2013/01/android-make-your-textview-look-like.html
         textView.setText(trailer.getName());
+        makeTextViewHyperlink(textView);
+    }
+
+    private void makeTextViewHyperlink(TextView tv) {
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        ssb.append(tv.getText());
+        ssb.setSpan(new URLSpan("#"), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv.setText(ssb, TextView.BufferType.SPANNABLE);
     }
 }
