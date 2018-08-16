@@ -18,6 +18,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
     private List<Review> mReviews;
 
+    public ReviewsAdapter(List<Review> reviews) {
+        mReviews = reviews;
+    }
+
     class ReviewViewHolder extends RecyclerView.ViewHolder {
         private TextView mAuthorReviewTextView;
         private TextView mReviewTextView;

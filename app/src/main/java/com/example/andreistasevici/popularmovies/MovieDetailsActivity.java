@@ -30,6 +30,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
     private RecyclerView trailersRecyclerView;
     private TrailersAdapter trailersAdapter;
 
+    private RecyclerView reviewsRecyclerView;
+    private ReviewsAdapter reviewsAdapter;
+
     public static final String TAG = MovieDetailsActivity.class.getSimpleName();
 
     @Override
@@ -46,9 +49,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
 
         //network call to fetch trailers
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
-        Call<TrailersApiResponse> call = movieDBAPI.fetchTrailers(movieId,
+        Call<TrailersApiResponse> callTrailer = movieDBAPI.fetchTrailers(movieId,
                 getResources().getString(R.string.api_key));
-        call.enqueue(new Callback<TrailersApiResponse>() {
+        callTrailer.enqueue(new Callback<TrailersApiResponse>() {
             @Override
             public void onResponse(Call<TrailersApiResponse> call, Response<TrailersApiResponse> response) {
                 trailersRecyclerView = findViewById(R.id.rv_trailers_list);
@@ -67,6 +70,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
             @Override
             public void onFailure(Call<TrailersApiResponse> call, Throwable t) {
                 Log.d(TAG, "failure in fetching movie trailers");
+            }
+        });
+
+        //network call to fetch reviews
+        Call<ReviewsApiResponse> callReviews = movieDBAPI.fetchReviews(movieId, getResources().getString(R.string.api_key));
+        callReviews.enqueue(new Callback<ReviewsApiResponse>() {
+            @Override
+            public void onResponse(Call<ReviewsApiResponse> call, Response<ReviewsApiResponse> response) {
+                reviewsRecyclerView = findViewById(R.id.rv_reviews_list);
+                reviewsAdapter = new ReviewsAdapter(response.body().getReviews());
+                reviewsRecyclerView.setAdapter(reviewsAdapter);
+                reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            }
+
+            @Override
+            public void onFailure(Call<ReviewsApiResponse> call, Throwable t) {
+
             }
         });
 
