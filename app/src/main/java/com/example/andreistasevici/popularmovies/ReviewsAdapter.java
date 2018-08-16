@@ -1,7 +1,9 @@
 package com.example.andreistasevici.popularmovies;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -22,7 +24,8 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
 
         public ReviewViewHolder(View reviewView) {
             super(reviewView);
-            //TODO: figure out which field do i want to display in this list and find by id
+            mAuthorReviewTextView = reviewView.findViewById(R.id.tv_review_author);
+            mReviewTextView = reviewView.findViewById(R.id.tv_review);
         }
     }
 
@@ -34,12 +37,25 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewVi
     @NonNull
     @Override
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //TODO: add layout for review list item and inflate it here
-        return null;
+        Context context = parent.getContext();
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+
+        View reviewView = layoutInflater.inflate(R.layout.reviews_list_item, parent, false);
+        ReviewViewHolder reviewViewHolder = new ReviewViewHolder(reviewView);
+        return reviewViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        //TODO: set text to text views
+        Review review = mReviews.get(position);
+
+        TextView authorReviewTextView = holder.mAuthorReviewTextView;
+        TextView reviewTextView = holder.mReviewTextView;
+
+        //define strings and set the value in the text views
+        String authorReviewText = review.getAuthor() + ":";
+        authorReviewTextView.setText(authorReviewText);
+        reviewTextView.setText(review.getContent());
+
     }
 }

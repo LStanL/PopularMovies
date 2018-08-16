@@ -36,6 +36,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
 
     //internal class for Trailer ViewHolder
     class TrailerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        //TODO: change this to trailerNameTextView??
         private TextView movieNameTextView;
 
         public TrailerViewHolder(View trailerView){
