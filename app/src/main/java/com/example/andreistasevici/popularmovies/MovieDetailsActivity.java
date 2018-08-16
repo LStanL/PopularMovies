@@ -106,8 +106,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
     */
     @Override
     public void onListItemClick(Trailer trailer) {
-        Intent nativeAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailer.getKey()));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
+        Intent nativeAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.YOUTUBE_APP_URI + trailer.getKey()));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(Constants.YOUTUBE_VIDEO_URL + trailer.getKey()));
 
         try {
             startActivity(nativeAppIntent);
