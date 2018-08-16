@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
             @Override
             public void onFailure(Call<MovieApiResponse> call, Throwable t) {
-                Log.d(TAG, "failure in fetching most popular movies");
+                Log.d(TAG, "failure while fetching movies");
             }
         });
     }
