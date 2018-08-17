@@ -55,7 +55,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
             @Override
             public void onResponse(Call<TrailersApiResponse> call, Response<TrailersApiResponse> response) {
                 trailersRecyclerView = findViewById(R.id.rv_trailers_list);
-                trailersAdapter = new TrailersAdapter(MovieDetailsActivity.this, response.body().getTrailers(),
+                trailersAdapter = new TrailersAdapter(response.body().getTrailers(),
                         MovieDetailsActivity.this);
                 trailersRecyclerView.setAdapter(trailersAdapter);
                 trailersRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -92,7 +92,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
 
             @Override
             public void onFailure(Call<ReviewsApiResponse> call, Throwable t) {
-
+                Log.d(TAG, "failure in fetching movie reviews");
             }
         });
 
@@ -106,7 +106,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
     */
     @Override
     public void onListItemClick(Trailer trailer) {
-        Intent nativeAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.YOUTUBE_APP_URI + trailer.getKey()));
+        Intent nativeAppIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(Constants.YOUTUBE_APP_URI + trailer.getKey()));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(Constants.YOUTUBE_VIDEO_URL + trailer.getKey()));
 

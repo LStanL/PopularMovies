@@ -21,7 +21,6 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
 
     private List<Trailer> mTrailers;
     private final ListItemClickListener mOnClickListener;
-    private Context mContext;
 
     /*
     * Adding interface to implement "click on item" functionality
@@ -31,8 +30,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
     }
 
     //constructor for TrailersAdapter
-    public TrailersAdapter(Context context, List<Trailer> trailers, ListItemClickListener onClickListener) {
-        this.mContext = context;
+    public TrailersAdapter(List<Trailer> trailers, ListItemClickListener onClickListener) {
         mTrailers = trailers;
         mOnClickListener = onClickListener;
     }
