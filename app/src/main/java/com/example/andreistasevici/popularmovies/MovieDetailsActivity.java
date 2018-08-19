@@ -81,7 +81,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
                 reviewsRecyclerView = findViewById(R.id.rv_reviews_list);
                 reviewsAdapter = new ReviewsAdapter(response.body().getReviews());
                 reviewsRecyclerView.setAdapter(reviewsAdapter);
-                reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                reviewsRecyclerView.setLayoutManager(new NoScrollLinearLayoutManager(getApplicationContext()));
 
                 //add dividers between items in recyclerview
                 //https://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview
