@@ -13,12 +13,10 @@ public class MovieEntry {
     @PrimaryKey
     private int id;
     private String name;
-    private boolean isFavorite;
 
-    public MovieEntry(int id, String name, boolean isFavorite) {
+    public MovieEntry(int id, String name) {
         this.id = id;
         this.name = name;
-        this.isFavorite = isFavorite;
     }
 
     public int getId() {
@@ -37,11 +35,4 @@ public class MovieEntry {
         this.name = name;
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
 }

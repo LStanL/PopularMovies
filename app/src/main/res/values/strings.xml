@@ -3,6 +3,7 @@
     <string name="details_activity_name">Movie Details</string>
     <string name="movie_poster">Movie Poster</string>
     <string name="favorite_button_default_text">Add to favorites</string>
+    <string name="favorite_button_remove_text">Remove from favorites</string>
 
     <!--Create strings for the menu items-->
     <string name="most_popular">Most Popular</string>

@@ -2,6 +2,7 @@ package com.example.andreistasevici.popularmovies;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +45,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
     //member variable for the Database
     private AppDatabase mDb;
 
+    MovieEntry movieEntry;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +59,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
 
         //getting object that was passed in the intent
         Bundle data = getIntent().getExtras();
-        Movie movie = data.getParcelable("movie");
+        final Movie movie = data.getParcelable("movie");
 
         //get id for the movie that was selected and pass it in the API call to fetch trailers
-        String movieId = movie.getId();
+        final String movieId = movie.getId();
 
         //network call to fetch trailers
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
@@ -113,12 +117,36 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         setUpUI(movie);
 
         //query DB by movie ID and check if the movie is favorite
-        MovieEntry movieEntry = mDb.movieDao().getMovieEntryById(Integer.valueOf(movieId));
+        //TODO set button color depending on if it is favorited
+        movieEntry = mDb.movieDao().getMovieEntryById(Integer.valueOf(movieId));
         if (movieEntry == null) {
-            mFavoriteButton.setText("Add to favs");
+            mFavoriteButton.setText(R.string.favorite_button_default_text);
+            mFavoriteButton.setBackgroundColor(Color.parseColor("#d3d3d3"));
         } else {
-            mFavoriteButton.setText("Remove form favs");
+            mFavoriteButton.setText(R.string.favorite_button_remove_text);
+            mFavoriteButton.setBackgroundColor(Color.parseColor("#f6f05a"));
         }
+
+        //set onClickListener for favorites button
+        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (movieEntry == null) {
+                    movieEntry = new MovieEntry(Integer.valueOf(movieId), movie.getMovieName());
+                    mDb.movieDao().insertMovie(movieEntry);
+                    mFavoriteButton.setText(R.string.favorite_button_remove_text);
+                    mFavoriteButton.setBackgroundColor(Color.parseColor("#f6f05a"));
+                    Log.d(TAG, "onClick: added movie to favorites");
+                } else {
+                    mDb.movieDao().deleteMovie(movieEntry);
+                    mFavoriteButton.setText(R.string.favorite_button_default_text);
+                    mFavoriteButton.setBackgroundColor(Color.parseColor("#d3d3d3"));
+                    Log.d(TAG, "onClick: removed movie from favorites");
+                    //setting movieEntry to null so I can favorite the movie again if needed
+                    movieEntry = null;
+                }
+            }
+        });
     }
 
     /*
