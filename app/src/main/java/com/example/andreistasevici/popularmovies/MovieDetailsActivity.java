@@ -9,9 +9,12 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.andreistasevici.popularmovies.database.AppDatabase;
+import com.example.andreistasevici.popularmovies.database.MovieEntry;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -27,6 +30,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
     private TextView mVoteAverage;
     private TextView mPlotSynopsis;
 
+    private Button mFavoriteButton;
+
     private RecyclerView trailersRecyclerView;
     private TrailersAdapter trailersAdapter;
 
@@ -35,10 +40,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
 
     public static final String TAG = MovieDetailsActivity.class.getSimpleName();
 
+    //member variable for the Database
+    private AppDatabase mDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+
+        mFavoriteButton = findViewById(R.id.btn_favorite);
+
+        //initialize DB
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         //getting object that was passed in the intent
         Bundle data = getIntent().getExtras();
@@ -98,6 +111,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
 
         //set all the UI string for movie details
         setUpUI(movie);
+
+        //query DB by movie ID and check if the movie is favorite
+        MovieEntry movieEntry = mDb.movieDao().getMovieEntryById(Integer.valueOf(movieId));
+        if (movieEntry == null) {
+            mFavoriteButton.setText("Add to favs");
+        } else {
+            mFavoriteButton.setText("Remove form favs");
+        }
     }
 
     /*

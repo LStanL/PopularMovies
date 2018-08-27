@@ -14,7 +14,7 @@ public class MovieEntry {
     private int id;
     private String name;
     private boolean isFavorite;
-    
+
     public MovieEntry(int id, String name, boolean isFavorite) {
         this.id = id;
         this.name = name;

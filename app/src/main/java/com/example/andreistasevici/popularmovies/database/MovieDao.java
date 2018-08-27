@@ -17,6 +17,9 @@ public interface MovieDao {
     @Query("SELECT * FROM movie")
     List<MovieEntry> loadFavoriteMovies();
 
+    @Query("SELECT * FROM movie WHERE id = :id")
+    MovieEntry getMovieEntryById(int id);
+
     @Insert
     void insertMovie(MovieEntry movieEntry);
 
