@@ -2,6 +2,8 @@
     <string name="main_activity_name">Popular Movies</string>
     <string name="details_activity_name">Movie Details</string>
     <string name="movie_poster">Movie Poster</string>
+    <string name="favorite_button_default_text">Add to favorites</string>
+
     <!--Create strings for the menu items-->
     <string name="most_popular">Most Popular</string>
     <string name="top_rated">Top Rated</string>

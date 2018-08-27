@@ -82,6 +82,17 @@
             app:layout_constraintLeft_toRightOf="@id/tv_vote_average_label"
             app:layout_constraintRight_toRightOf="parent" />
 
+        <Button
+            android:id="@+id/btn_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/favorite_button_default_text"
+            app:layout_constraintLeft_toRightOf="@id/iv_movie_details_poster"
+            app:layout_constraintTop_toBottomOf="@id/tv_vote_average_label"
+            android:textSize="11sp"/>
+
         <TextView
             android:id="@+id/tv_plot_synopsis_label"
             android:layout_width="wrap_content"
