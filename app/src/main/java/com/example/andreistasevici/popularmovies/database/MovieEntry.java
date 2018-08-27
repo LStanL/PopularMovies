@@ -1,6 +1,7 @@
 package com.example.andreistasevici.popularmovies.database;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -18,6 +19,7 @@ public class MovieEntry {
     //creating 2 constructors
     //first one can be used by us,
     //but has to be ignored, since room doesn't support multiple constructors
+    @Ignore
     public MovieEntry(String name, boolean isFavorite) {
         this.name = name;
         this.isFavorite = isFavorite;
