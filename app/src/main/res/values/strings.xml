@@ -8,6 +8,7 @@
     <!--Create strings for the menu items-->
     <string name="most_popular">Most Popular</string>
     <string name="top_rated">Top Rated</string>
+    <string name="favorites">Favorites</string>
     <string name="title_activity_movie_details">MovieDetails</string>
 
     <!--Label strings-->
