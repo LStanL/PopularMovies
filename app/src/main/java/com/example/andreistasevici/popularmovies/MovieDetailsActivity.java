@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.andreistasevici.popularmovies.database.AppDatabase;
-import com.example.andreistasevici.popularmovies.database.MovieEntry;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -45,7 +44,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
     //member variable for the Database
     private AppDatabase mDb;
 
-    MovieEntry movieEntry;
+    private boolean isFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +61,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         final Movie movie = data.getParcelable("movie");
 
         //get id for the movie that was selected and pass it in the API call to fetch trailers
-        final String movieId = movie.getId();
+        final int movieId = movie.getId();
 
         //network call to fetch trailers
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
-        Call<TrailersApiResponse> callTrailer = movieDBAPI.fetchTrailers(movieId,
+        Call<TrailersApiResponse> callTrailer = movieDBAPI.fetchTrailers(String.valueOf(movieId),
                 getResources().getString(R.string.api_key));
         callTrailer.enqueue(new Callback<TrailersApiResponse>() {
             @Override
@@ -91,7 +90,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         });
 
         //network call to fetch reviews
-        Call<ReviewsApiResponse> callReviews = movieDBAPI.fetchReviews(movieId, getResources().getString(R.string.api_key));
+        Call<ReviewsApiResponse> callReviews = movieDBAPI.fetchReviews(String.valueOf(movieId), getResources().getString(R.string.api_key));
         callReviews.enqueue(new Callback<ReviewsApiResponse>() {
             @Override
             public void onResponse(Call<ReviewsApiResponse> call, Response<ReviewsApiResponse> response) {
@@ -116,34 +115,33 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         //set all the UI string for movie details
         setUpUI(movie);
 
-        //query DB by movie ID and check if the movie is favorite
-        //TODO set button color depending on if it is favorited
-        movieEntry = mDb.movieDao().getMovieEntryById(Integer.valueOf(movieId));
-        if (movieEntry == null) {
+        //query DB by movie ID and see if movie is favorite
+        if (mDb.movieDao().getMovieById(movieId) == null) {
             mFavoriteButton.setText(R.string.favorite_button_default_text);
             mFavoriteButton.setBackgroundColor(Color.parseColor("#d3d3d3"));
+            isFavorite = false;
         } else {
             mFavoriteButton.setText(R.string.favorite_button_remove_text);
             mFavoriteButton.setBackgroundColor(Color.parseColor("#f6f05a"));
+            isFavorite = true;
         }
 
         //set onClickListener for favorites button
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (movieEntry == null) {
-                    movieEntry = new MovieEntry(Integer.valueOf(movieId), movie.getMovieName());
-                    mDb.movieDao().insertMovie(movieEntry);
-                    mFavoriteButton.setText(R.string.favorite_button_remove_text);
-                    mFavoriteButton.setBackgroundColor(Color.parseColor("#f6f05a"));
-                    Log.d(TAG, "onClick: added movie to favorites");
-                } else {
-                    mDb.movieDao().deleteMovie(movieEntry);
+                if (isFavorite) {
+                    mDb.movieDao().deleteMovie(movie);
                     mFavoriteButton.setText(R.string.favorite_button_default_text);
                     mFavoriteButton.setBackgroundColor(Color.parseColor("#d3d3d3"));
                     Log.d(TAG, "onClick: removed movie from favorites");
-                    //setting movieEntry to null so I can favorite the movie again if needed
-                    movieEntry = null;
+                    isFavorite = false;
+                } else {
+                    mDb.movieDao().insertMovie(movie);
+                    mFavoriteButton.setText(R.string.favorite_button_remove_text);
+                    mFavoriteButton.setBackgroundColor(Color.parseColor("#f6f05a"));
+                    Log.d(TAG, "onClick: added movie to favorites");
+                    isFavorite = true;
                 }
             }
         });
@@ -175,7 +173,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         mPlotSynopsis = findViewById(R.id.tv_plot_synopsis);
 
         //Construct URI, fetch the image and display using Picasso
-        String imageUri = Constants.IMAGE_BASE_URI + movie.getmMoviePosterPath();
+        String imageUri = Constants.IMAGE_BASE_URI + movie.getMoviePosterPath();
         Picasso
                 .with(this)
                 .load(imageUri)
@@ -185,7 +183,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         mMovieTitle.setText(movie.getMovieName());
         mReleaseDate.setText(movie.getReleaseDate());
         mVoteAverage.setText(movie.getVoteAverage());
-        mPlotSynopsis.setText(movie.getPlotSynposis());
+        mPlotSynopsis.setText(movie.getPlotSynopsis());
 
     }
 }

@@ -1,7 +1,10 @@
 package com.example.andreistasevici.popularmovies;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -12,74 +15,78 @@ import com.google.gson.annotations.SerializedName;
  * http://www.vogella.com/tutorials/AndroidParcelable/article.html
  */
 
+@Entity(tableName = "movie")
 public class Movie implements Parcelable{
 
     /*
     * Data class for retrofit
     * */
 
+    @NonNull
+    @PrimaryKey
+    @SerializedName("id")
+    private int id;
+
     @SerializedName("poster_path")
-    private String mMoviePosterPath;
+    private String moviePosterPath;
 
     @SerializedName("title")
-    private String mMovieName;
+    private String movieName;
 
     @SerializedName("release_date")
-    private String mReleaseDate;
+    private String releaseDate;
 
     @SerializedName("vote_average")
-    private String mVoteAverage;
+    private String voteAverage;
 
     @SerializedName("overview")
-    private String mPlotSynposis;
-
-    @SerializedName("id")
-    private String mId;
+    private String plotSynopsis;
 
     //Contructor
-    public Movie(String posterPath, String movieName, String releaseDate,
-                 String voteAverage, String plotSynopsis, String id) {
-        this.mMoviePosterPath = posterPath;
-        this.mMovieName = movieName;
-        this.mReleaseDate = releaseDate;
-        this.mVoteAverage = voteAverage;
-        this.mPlotSynposis = plotSynopsis;
-        this.mId = id;
 
+
+    public Movie(int id, String moviePosterPath, String movieName, String releaseDate,
+                 String voteAverage, String plotSynopsis) {
+        this.id = id;
+        this.moviePosterPath = moviePosterPath;
+        this.movieName = movieName;
+        this.releaseDate = releaseDate;
+        this.voteAverage = voteAverage;
+        this.plotSynopsis = plotSynopsis;
     }
 
     //Getters for all the fields
-    public String getmMoviePosterPath() {
-        return mMoviePosterPath;
+    public String getMoviePosterPath() {
+        return moviePosterPath;
     }
 
     public String getMovieName() {
-        return mMovieName;
+        return movieName;
     }
 
     public String getReleaseDate() {
-        return mReleaseDate;
+        return releaseDate;
     }
 
     public String getVoteAverage() {
-        return mVoteAverage;
+        return voteAverage;
     }
 
-    public String getPlotSynposis() {
-        return mPlotSynposis;
+    public String getPlotSynopsis() {
+        return plotSynopsis;
     }
 
-    public String getId() { return mId; }
+    public int getId() { return id; }
 
 
     //Parcelling part
     public Movie(Parcel in) {
-        this.mMoviePosterPath = in.readString();
-        this.mMovieName = in.readString();
-        this.mReleaseDate = in.readString();
-        this.mVoteAverage = in.readString();
-        this.mPlotSynposis = in.readString();
-        this.mId = in.readString();
+        this.moviePosterPath = in.readString();
+        this.movieName = in.readString();
+        this.releaseDate = in.readString();
+        this.voteAverage = in.readString();
+        this.plotSynopsis = in.readString();
+        this.id = in.readInt();
     }
 
     /*overriding describeContents and writeToParcel which is required when
@@ -91,12 +98,12 @@ public class Movie implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mMoviePosterPath);
-        dest.writeString(this.mMovieName);
-        dest.writeString(this.mReleaseDate);
-        dest.writeString(this.mVoteAverage);
-        dest.writeString(this.mPlotSynposis);
-        dest.writeString(this.mId);
+        dest.writeString(this.moviePosterPath);
+        dest.writeString(this.movieName);
+        dest.writeString(this.releaseDate);
+        dest.writeString(this.voteAverage);
+        dest.writeString(this.plotSynopsis);
+        dest.writeInt(this.id);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {

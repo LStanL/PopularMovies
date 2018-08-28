@@ -88,7 +88,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         ImageView imageView = movieViewHolder.movieImageView;
 
         //construct image uri and load fetch it using picasso
-        String imageUri = Constants.IMAGE_BASE_URI + movie.getmMoviePosterPath();
+        String imageUri = Constants.IMAGE_BASE_URI + movie.getMoviePosterPath();
         Picasso
                 .with(mContext)
                 .load(imageUri)

@@ -5,6 +5,8 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import com.example.andreistasevici.popularmovies.Movie;
+
 import java.util.List;
 
 /**
@@ -15,14 +17,14 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    List<MovieEntry> loadFavoriteMovies();
+    List<Movie> loadFavoriteMovies();
 
     @Query("SELECT * FROM movie WHERE id = :id")
-    MovieEntry getMovieEntryById(int id);
+    Movie getMovieById(int id);
 
     @Insert
-    void insertMovie(MovieEntry movieEntry);
+    void insertMovie(Movie movie);
 
     @Delete
-    void deleteMovie(MovieEntry movieEntry);
+    void deleteMovie(Movie movie);
 }

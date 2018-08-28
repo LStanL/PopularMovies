@@ -6,11 +6,13 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.andreistasevici.popularmovies.Movie;
+
 /**
  * Created by andreistasevici on 8/26/18.
  */
 
-@Database(entities = {MovieEntry.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String TAG = AppDatabase.class.getSimpleName();
