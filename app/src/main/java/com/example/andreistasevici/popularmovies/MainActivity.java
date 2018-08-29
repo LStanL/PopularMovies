@@ -1,7 +1,10 @@
 package com.example.andreistasevici.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.andreistasevici.popularmovies.database.AppDatabase;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,10 +89,17 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 break;
             case R.id.display_favorites:
                 moviesRecyclerView = findViewById(R.id.rv_movies_list);
-                moviesAdapter = new MoviesAdapter(MainActivity.this, mDb.movieDao().loadFavoriteMovies(),
-                        MainActivity.this);
-                moviesRecyclerView.setAdapter(moviesAdapter);
-                moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                LiveData<List<Movie>> movies = mDb.movieDao().loadFavoriteMovies();
+                movies.observe(this, new Observer<List<Movie>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Movie> movies) {
+                        moviesAdapter = new MoviesAdapter(MainActivity.this, movies,
+                                MainActivity.this);
+                        Log.d(TAG, "onOptionsItemSelected: fetched favorite movies");
+                        moviesRecyclerView.setAdapter(moviesAdapter);
+                        moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                    }
+                });
         }
         return super.onOptionsItemSelected(item);
     }
