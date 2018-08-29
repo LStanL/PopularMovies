@@ -30,6 +30,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:design:27.1.1'
     implementation "android.arch.persistence.room:runtime:$room_version"
+    implementation "android.arch.lifecycle:extensions:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:0.5'
