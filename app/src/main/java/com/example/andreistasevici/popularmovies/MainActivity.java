@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     * https://guides.codepath.com/android/using-the-recyclerview
     * */
 
+    LiveData<List<Movie>> movies;
     private RecyclerView moviesRecyclerView;
     private MoviesAdapter moviesAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //creating DB instance and fetching all movies
+        mDb = AppDatabase.getInstance(getApplicationContext());
+        movies = mDb.movieDao().loadFavoriteMovies();
+        Log.d(TAG, "onCreate: fetched all movies");
 
         //Making request to fetch popular movies on activity creation
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
@@ -73,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
         TheMovieDBAPI movieDBAPI = null;
         Call<MovieApiResponse> call = null;
-        mDb = AppDatabase.getInstance(getApplicationContext());
 
         //Check which menu item was selected
         switch (itemSelected) {
@@ -89,13 +94,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 break;
             case R.id.display_favorites:
                 moviesRecyclerView = findViewById(R.id.rv_movies_list);
-                LiveData<List<Movie>> movies = mDb.movieDao().loadFavoriteMovies();
                 movies.observe(this, new Observer<List<Movie>>() {
                     @Override
                     public void onChanged(@Nullable List<Movie> movies) {
                         moviesAdapter = new MoviesAdapter(MainActivity.this, movies,
                                 MainActivity.this);
-                        Log.d(TAG, "onOptionsItemSelected: fetched favorite movies");
                         moviesRecyclerView.setAdapter(moviesAdapter);
                         moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
                     }
