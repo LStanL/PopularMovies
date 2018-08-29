@@ -1,10 +1,13 @@
 package com.example.andreistasevici.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -116,15 +119,22 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         setUpUI(movie);
 
         //query DB by movie ID and see if movie is favorite
-        if (mDb.movieDao().getMovieById(movieId) == null) {
-            mFavoriteButton.setText(R.string.favorite_button_default_text);
-            mFavoriteButton.setBackgroundColor(Color.parseColor("#d3d3d3"));
-            isFavorite = false;
-        } else {
-            mFavoriteButton.setText(R.string.favorite_button_remove_text);
-            mFavoriteButton.setBackgroundColor(Color.parseColor("#f6f05a"));
-            isFavorite = true;
-        }
+        LiveData<Movie> movieLiveData = mDb.movieDao().getMovieById(movieId);
+        movieLiveData.observe(this, new Observer<Movie>() {
+            @Override
+            public void onChanged(@Nullable Movie movie) {
+                if (movie == null) {
+                    mFavoriteButton.setText(R.string.favorite_button_default_text);
+                    mFavoriteButton.setBackgroundColor(Color.parseColor("#d3d3d3"));
+                    isFavorite = false;
+                } else {
+                    mFavoriteButton.setText(R.string.favorite_button_remove_text);
+                    mFavoriteButton.setBackgroundColor(Color.parseColor("#f6f05a"));
+                    isFavorite = true;
+                }
+            }
+        });
+
 
         //set onClickListener for favorites button
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
