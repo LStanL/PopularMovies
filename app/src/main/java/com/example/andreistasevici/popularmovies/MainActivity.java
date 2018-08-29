@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.andreistasevici.popularmovies.database.AppDatabase;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     private MoviesAdapter moviesAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private AppDatabase mDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
         Call<MovieApiResponse> call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
         getMovies(call);
+
     }
 
     /*
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
         TheMovieDBAPI movieDBAPI = null;
         Call<MovieApiResponse> call = null;
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         //Check which menu item was selected
         switch (itemSelected) {
@@ -76,6 +82,12 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 call = movieDBAPI.fetchTopRatedMovies(getResources().getString(R.string.api_key));
                 getMovies(call);
                 break;
+            case R.id.display_favorites:
+                moviesRecyclerView = findViewById(R.id.rv_movies_list);
+                moviesAdapter = new MoviesAdapter(MainActivity.this, mDb.movieDao().loadFavoriteMovies(),
+                        MainActivity.this);
+                moviesRecyclerView.setAdapter(moviesAdapter);
+                moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         }
         return super.onOptionsItemSelected(item);
     }
