@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     * https://guides.codepath.com/android/using-the-recyclerview
     * */
 
-    LiveData<List<Movie>> movies;
+    LiveData<List<Movie>> moviesLiveData;
     private RecyclerView moviesRecyclerView;
     private MoviesAdapter moviesAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -41,8 +41,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
         //creating DB instance and fetching all movies
         mDb = AppDatabase.getInstance(getApplicationContext());
-        movies = mDb.movieDao().loadFavoriteMovies();
-        Log.d(TAG, "onCreate: fetched all movies");
+        moviesLiveData = mDb.movieDao().loadFavoriteMovies();
 
         //Making request to fetch popular movies on activity creation
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 break;
             case R.id.display_favorites:
                 moviesRecyclerView = findViewById(R.id.rv_movies_list);
-                movies.observe(this, new Observer<List<Movie>>() {
+                moviesLiveData.observe(this, new Observer<List<Movie>>() {
                     @Override
                     public void onChanged(@Nullable List<Movie> movies) {
                         moviesAdapter = new MoviesAdapter(MainActivity.this, movies,
