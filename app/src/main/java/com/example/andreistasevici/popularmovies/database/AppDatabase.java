@@ -24,9 +24,6 @@ public abstract class AppDatabase extends RoomDatabase {
         if (sInstance == null) {
             synchronized (LOCK) {
                 Log.d(TAG, "getInstance: Creating new database instance");
-                //TODO - need to remove allowMainThreadQueries later
-                //Need this for insert and delete, Live data already runs out of main thread
-                //In order to delete, need to create AppExecutor
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME).allowMainThreadQueries().build();
             }

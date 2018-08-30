@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 break;
             case R.id.display_favorites:
                 moviesRecyclerView = findViewById(R.id.rv_movies_list);
-                viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
+                viewModel.getMoviesLiveData().observe(this, new Observer<List<Movie>>() {
                     @Override
                     public void onChanged(@Nullable List<Movie> movies) {
                         moviesAdapter = new MoviesAdapter(MainActivity.this, movies,

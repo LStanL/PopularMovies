@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
-    private LiveData<List<Movie>> movies;
+    private LiveData<List<Movie>> moviedLiveData;
 
     private static final String TAG = MainViewModel.class.getSimpleName();
 
@@ -24,11 +24,11 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
-        movies = database.movieDao().loadFavoriteMovies();
+        moviedLiveData = database.movieDao().loadFavoriteMovies();
         Log.d(TAG, "MainViewModel: fetchingallmovies");
     }
 
-    public LiveData<List<Movie>> getMovies() {
-        return movies;
+    public LiveData<List<Movie>> getMoviesLiveData() {
+        return moviedLiveData;
     }
 }

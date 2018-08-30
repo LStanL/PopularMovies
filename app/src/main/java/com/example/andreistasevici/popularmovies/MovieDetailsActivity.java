@@ -1,7 +1,7 @@
 package com.example.andreistasevici.popularmovies;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
@@ -118,10 +118,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         //set all the UI string for movie details
         setUpUI(movie);
 
-        //query DB by movie ID and see if movie is favorite
-        //TODO - add a is favorited field to Movie??
-        LiveData<Movie> movieLiveData = mDb.movieDao().getMovieById(movieId);
-        movieLiveData.observe(this, new Observer<Movie>() {
+        //get movieLiveData and check if the movie is favorited
+        MovieDetailsViewModelFactory factory = new MovieDetailsViewModelFactory(mDb, movieId);
+        MovieDetailsViewModel viewModel =
+                ViewModelProviders.of(this, factory).get(MovieDetailsViewModel.class);
+        viewModel.getMovieLiveData().observe(this, new Observer<Movie>() {
             @Override
             public void onChanged(@Nullable Movie movie) {
                 if (movie == null) {
