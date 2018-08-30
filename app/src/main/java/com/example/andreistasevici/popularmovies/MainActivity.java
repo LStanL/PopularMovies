@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             case R.id.display_favorites:
                 moviesRecyclerView = findViewById(R.id.rv_movies_list);
                 moviesLiveData.observe(this, new Observer<List<Movie>>() {
+                    //TODO - move querying DB into on start method
                     @Override
                     public void onChanged(@Nullable List<Movie> movies) {
                         moviesAdapter = new MoviesAdapter(MainActivity.this, movies,
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                         moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
                     }
                 });
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

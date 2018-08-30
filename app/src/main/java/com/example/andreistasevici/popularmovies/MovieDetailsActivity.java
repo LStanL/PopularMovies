@@ -119,6 +119,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailersA
         setUpUI(movie);
 
         //query DB by movie ID and see if movie is favorite
+        //TODO - add a is favorited field to Movie??
         LiveData<Movie> movieLiveData = mDb.movieDao().getMovieById(movieId);
         movieLiveData.observe(this, new Observer<Movie>() {
             @Override
