@@ -1,7 +1,7 @@
 package com.example.andreistasevici.popularmovies;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,21 +27,24 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     * https://guides.codepath.com/android/using-the-recyclerview
     * */
 
-    LiveData<List<Movie>> moviesLiveData;
     private RecyclerView moviesRecyclerView;
     private MoviesAdapter moviesAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private AppDatabase mDb;
 
+    MainViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //creating DB instance and fetching all movies
+        //creating DB instance
         mDb = AppDatabase.getInstance(getApplicationContext());
-        moviesLiveData = mDb.movieDao().loadFavoriteMovies();
+
+        //getting viewModel
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         //Making request to fetch popular movies on activity creation
         TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
@@ -93,8 +96,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 break;
             case R.id.display_favorites:
                 moviesRecyclerView = findViewById(R.id.rv_movies_list);
-                moviesLiveData.observe(this, new Observer<List<Movie>>() {
-                    //TODO - move querying DB into on start method
+                viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
                     @Override
                     public void onChanged(@Nullable List<Movie> movies) {
                         moviesAdapter = new MoviesAdapter(MainActivity.this, movies,
