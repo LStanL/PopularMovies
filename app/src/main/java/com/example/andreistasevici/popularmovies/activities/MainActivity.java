@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -12,6 +12,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.andreistasevici.popularmovies.models.MainViewModel;
+import com.example.andreistasevici.popularmovies.models.Movie;
+import com.example.andreistasevici.popularmovies.network.MovieApiResponse;
+import com.example.andreistasevici.popularmovies.adapters.MoviesAdapter;
+import com.example.andreistasevici.popularmovies.R;
+import com.example.andreistasevici.popularmovies.network.RetrofitClientInstance;
+import com.example.andreistasevici.popularmovies.network.TheMovieDBAPI;
 import com.example.andreistasevici.popularmovies.database.AppDatabase;
 
 import java.util.List;

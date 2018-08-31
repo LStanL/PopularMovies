@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.models;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

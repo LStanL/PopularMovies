@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.andreistasevici.popularmovies.Movie;
+import com.example.andreistasevici.popularmovies.models.Movie;
 
 /**
  * Created by andreistasevici on 8/26/18.

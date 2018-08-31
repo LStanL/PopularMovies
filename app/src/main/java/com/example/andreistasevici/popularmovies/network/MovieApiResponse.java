@@ -1,5 +1,6 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.network;
 
+import com.example.andreistasevici.popularmovies.models.Movie;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

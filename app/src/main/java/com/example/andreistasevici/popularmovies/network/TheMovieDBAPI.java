@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.network;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

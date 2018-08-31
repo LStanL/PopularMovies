@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.models;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.utils;
 
 /**
  * Created by andreistasevici on 6/18/18.

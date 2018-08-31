@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.layoutmanager;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;

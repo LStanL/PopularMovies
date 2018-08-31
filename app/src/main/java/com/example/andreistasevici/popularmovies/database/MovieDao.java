@@ -6,7 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.example.andreistasevici.popularmovies.Movie;
+import com.example.andreistasevici.popularmovies.models.Movie;
 
 import java.util.List;
 

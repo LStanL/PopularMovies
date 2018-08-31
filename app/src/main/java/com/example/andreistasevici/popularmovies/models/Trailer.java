@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.models;
 
 import com.google.gson.annotations.SerializedName;
 

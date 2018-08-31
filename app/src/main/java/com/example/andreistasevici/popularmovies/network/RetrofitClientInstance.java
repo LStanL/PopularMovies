@@ -1,4 +1,6 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.network;
+
+import com.example.andreistasevici.popularmovies.utils.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

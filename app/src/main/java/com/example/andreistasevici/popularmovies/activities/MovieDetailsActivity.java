@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -18,6 +18,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.andreistasevici.popularmovies.utils.Constants;
+import com.example.andreistasevici.popularmovies.models.Movie;
+import com.example.andreistasevici.popularmovies.models.MovieDetailsViewModel;
+import com.example.andreistasevici.popularmovies.models.MovieDetailsViewModelFactory;
+import com.example.andreistasevici.popularmovies.layoutmanager.NoScrollLinearLayoutManager;
+import com.example.andreistasevici.popularmovies.R;
+import com.example.andreistasevici.popularmovies.network.RetrofitClientInstance;
+import com.example.andreistasevici.popularmovies.adapters.ReviewsAdapter;
+import com.example.andreistasevici.popularmovies.network.ReviewsApiResponse;
+import com.example.andreistasevici.popularmovies.network.TheMovieDBAPI;
+import com.example.andreistasevici.popularmovies.models.Trailer;
+import com.example.andreistasevici.popularmovies.adapters.TrailersAdapter;
+import com.example.andreistasevici.popularmovies.network.TrailersApiResponse;
 import com.example.andreistasevici.popularmovies.database.AppDatabase;
 import com.squareup.picasso.Picasso;
 
@@ -25,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieDetailsActivity extends AppCompatActivity implements TrailersAdapter.ListItemClickListener{
+public class MovieDetailsActivity extends AppCompatActivity implements TrailersAdapter.ListItemClickListener {
 
     //Fields for all the UI elements present in the activity
     private ImageView mMovieDetailsPoster;

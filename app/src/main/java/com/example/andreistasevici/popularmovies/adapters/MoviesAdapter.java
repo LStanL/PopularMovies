@@ -1,4 +1,4 @@
-package com.example.andreistasevici.popularmovies;
+package com.example.andreistasevici.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.andreistasevici.popularmovies.utils.Constants;
+import com.example.andreistasevici.popularmovies.models.Movie;
+import com.example.andreistasevici.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
