@@ -2,7 +2,9 @@ package com.example.andreistasevici.popularmovies.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     private AppDatabase mDb;
 
+    private SharedPreferences sharedPreferences;
+
     MainViewModel viewModel;
 
     @Override
@@ -57,16 +61,19 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         //getting viewModel
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
-        if (savedInstanceState == null) {
+        sharedPreferences = getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        itemSelected = sharedPreferences.getInt("menu_item_selected", -1);
+
+        if (itemSelected == -1) {
+            Log.d(TAG, "onCreate: mydebuglog itemSelected is " + itemSelected + " so loading popular movies");
             //Making request to fetch popular movies on new activity creation
             movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
             call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
             getMovies(call);
-            itemSelected = R.id.search_popular;
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("menu_item_selected", itemSelected);
+            editor.commit();
         } else {
-            //getting id of the menu option selected
-            itemSelected = savedInstanceState.getInt("ITEM_SELECTED");
-
             //populating adapter depending on which menu item was selected
             switch (itemSelected) {
                 case R.id.search_popular:
@@ -121,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     public boolean onOptionsItemSelected(MenuItem item) {
         itemSelected = item.getItemId();
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("menu_item_selected", itemSelected);
+        editor.commit();
+
         TheMovieDBAPI movieDBAPI = null;
         Call<MovieApiResponse> call = null;
 
@@ -170,18 +181,5 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             }
         });
     }
-
-    //store id of menu item selected
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("ITEM_SELECTED", itemSelected);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: myactivitygotdestroyed");
-    }
+    
 }
