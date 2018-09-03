@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     private SharedPreferences sharedPreferences;
 
+    private GridLayoutManager mLayoutManager;
+    Parcelable mListState;
+
     MainViewModel viewModel;
 
     @Override
@@ -60,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
         //getting viewModel
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        //setting layout manager
+        mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
 
         sharedPreferences = getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
         itemSelected = sharedPreferences.getInt("menu_item_selected", -1);
@@ -94,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                             moviesAdapter = new MoviesAdapter(MainActivity.this, movies,
                                     MainActivity.this);
                             moviesRecyclerView.setAdapter(moviesAdapter);
-                            moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                            moviesRecyclerView.setLayoutManager(mLayoutManager);
                         }
                     });
                     break;
@@ -155,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                         moviesAdapter = new MoviesAdapter(MainActivity.this, movies,
                                 MainActivity.this);
                         moviesRecyclerView.setAdapter(moviesAdapter);
-                        moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                        moviesRecyclerView.setLayoutManager(mLayoutManager);
                     }
                 });
                 break;
@@ -172,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 moviesAdapter = new MoviesAdapter(MainActivity.this, response.body().getMovies(),
                         MainActivity.this);
                 moviesRecyclerView.setAdapter(moviesAdapter);
-                moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                moviesRecyclerView.setLayoutManager(mLayoutManager);
             }
 
             @Override
@@ -181,5 +188,30 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             }
         });
     }
-    
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        mListState = mLayoutManager.onSaveInstanceState();
+        outState.putParcelable("LIST_STATE_KEY", mListState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mListState = savedInstanceState.getParcelable("LIST_STATE_KEY");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mListState != null) {
+            mLayoutManager.onRestoreInstanceState(mListState);
+        }
+    }
 }
