@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     private RecyclerView moviesRecyclerView;
     private MoviesAdapter moviesAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String MENU_ITEM_SELECTED = "menu_item_selected";
+    private static final String LIST_STATE_KEY = "list_state_key";
     private int itemSelected;
 
     private AppDatabase mDb;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
 
         sharedPreferences = getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-        itemSelected = sharedPreferences.getInt("menu_item_selected", -1);
+        itemSelected = sharedPreferences.getInt(MENU_ITEM_SELECTED, -1);
 
         if (itemSelected == -1) {
             Log.d(TAG, "onCreate: mydebuglog itemSelected is " + itemSelected + " so loading popular movies");
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
             getMovies(call);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("menu_item_selected", itemSelected);
+            editor.putInt(MENU_ITEM_SELECTED, itemSelected);
             editor.commit();
         } else {
             //populating adapter depending on which menu item was selected
@@ -136,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         itemSelected = item.getItemId();
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("menu_item_selected", itemSelected);
+        editor.putInt(MENU_ITEM_SELECTED, itemSelected);
         editor.commit();
 
         TheMovieDBAPI movieDBAPI = null;
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         super.onSaveInstanceState(outState);
 
         mListState = mLayoutManager.onSaveInstanceState();
-        outState.putParcelable("LIST_STATE_KEY", mListState);
+        outState.putParcelable(LIST_STATE_KEY, mListState);
     }
 
     @Override
@@ -202,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         super.onRestoreInstanceState(savedInstanceState);
 
         if (savedInstanceState != null) {
-            mListState = savedInstanceState.getParcelable("LIST_STATE_KEY");
+            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
         }
     }
 
