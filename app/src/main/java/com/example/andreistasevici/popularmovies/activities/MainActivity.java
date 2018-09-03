@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     private RecyclerView moviesRecyclerView;
     private MoviesAdapter moviesAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
+    private int itemSelected;
 
     private AppDatabase mDb;
 
@@ -47,17 +48,51 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TheMovieDBAPI movieDBAPI;
+        Call<MovieApiResponse> call;
+
         //creating DB instance
         mDb = AppDatabase.getInstance(getApplicationContext());
 
         //getting viewModel
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
-        //Making request to fetch popular movies on activity creation
-        TheMovieDBAPI movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
-        Call<MovieApiResponse> call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
-        getMovies(call);
+        if (savedInstanceState == null) {
+            //Making request to fetch popular movies on new activity creation
+            movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
+            call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
+            getMovies(call);
+            itemSelected = R.id.search_popular;
+        } else {
+            //getting id of the menu option selected
+            itemSelected = savedInstanceState.getInt("ITEM_SELECTED");
 
+            //populating adapter depending on which menu item was selected
+            switch (itemSelected) {
+                case R.id.search_popular:
+                    movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
+                    call = movieDBAPI.fetchPopularMovies(getResources().getString(R.string.api_key));
+                    getMovies(call);
+                    break;
+                case R.id.search_top_rated:
+                    movieDBAPI = RetrofitClientInstance.getRetrofitInstance().create(TheMovieDBAPI.class);
+                    call = movieDBAPI.fetchTopRatedMovies(getResources().getString(R.string.api_key));
+                    getMovies(call);
+                    break;
+                case R.id.display_favorites:
+                    moviesRecyclerView = findViewById(R.id.rv_movies_list);
+                    viewModel.getMoviesLiveData().observe(this, new Observer<List<Movie>>() {
+                        @Override
+                        public void onChanged(@Nullable List<Movie> movies) {
+                            moviesAdapter = new MoviesAdapter(MainActivity.this, movies,
+                                    MainActivity.this);
+                            moviesRecyclerView.setAdapter(moviesAdapter);
+                            moviesRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                        }
+                    });
+                    break;
+            }
+        }
     }
 
     /*
@@ -84,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemSelected = item.getItemId();
+        itemSelected = item.getItemId();
 
         TheMovieDBAPI movieDBAPI = null;
         Call<MovieApiResponse> call = null;
@@ -134,5 +169,19 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 Log.d(TAG, "failure while fetching movies");
             }
         });
+    }
+
+    //store id of menu item selected
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("ITEM_SELECTED", itemSelected);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: myactivitygotdestroyed");
     }
 }
